@@ -1,4 +1,7 @@
 Edz Steinar V. Bederico - 19-2602-633
+Eron John Benedict Corilla - 23-2355-846
+Ronan Dwayne Lascano - 23-1992-325
+Lanz Santillan - 23-2354-811
 
 MediAI- A diagnosis app that uses AI to search for diseases.
 
