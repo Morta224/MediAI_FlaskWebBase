@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medi-AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1976D2; /* Updated primary color - a darker blue */
+            --primary-light: #E3F2FD;
+            --secondary: #FFFFFF;
+            --accent: #FF4757;
+            --text: #333333;
+            --text-light: #757575;
+            --border: #E0E0E0;
+            --background: #f0f2f5; /* Light grey background */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text);
+            background-color: var(--background); /* Use the defined background color */
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 32px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .card {
+            background-color: var(--secondary);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 40px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #1565C0; /* Darker blue on hover */
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .diagnosis-item {
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: var(--primary-light);
+        }
+
+        .diagnosis-item h3 {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .probability {
+            background-color: var(--primary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .symptoms-list {
+            margin: 10px 0;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .action-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .action-item i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading i {
+            font-size: 40px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .warning {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .user-input {
+            margin-top: 20px;
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        .results {
+            margin-top: 20px;
+        }
+
+        .results ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .results li {
+            background-color: var(--primary-light);
+            margin-bottom: 10px;
+            padding: 15px;
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+        }
+
+        .treatments-section {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: var(--secondary);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .treatments-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .treatments-item i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        .results-list details {
+            margin-bottom: 15px;
+        }
+
+        .results-list summary {
+            list-style: none;
+            cursor: pointer;
+        }
+
+        .results-list summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .results-list summary h3 {
+            margin: 0;
+        }
+
+        /* New styles for tag system */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--primary);
+        }
+
+        .tag:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .suggestions-container {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .selected-tag {
+            background-color: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .selected-tag .remove-tag {
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="material-icons">medical_services</i>
+                <h1>MediAI Diagnose</h1>
+            </div>
+        </header>
+
+        <!-- Home Screen -->
+        <div id="home-screen" class="card">
+            <h2>Describe Your Symptoms</h2>
+            <form id="symptoms-form" method="POST" class="input-group">
+                <label for="symptoms_input">What symptoms are you experiencing?</label><br>
+                <div class="selected-tags" id="selected-tags-container"></div>
+                <input type="text" id="symptoms_input" name="symptoms_input"
+                    placeholder="e.g., fever, cough, headache" value="{{ user_input }}" autocomplete="off"><br><br>
+                
+                <div class="suggestions-container" id="suggestions-container"></div>
+
+                <button type="submit" class="btn" id="analyze-btn">
+                    <i class="material-icons">search</i>
+                    Analyze Symptoms
+                </button>
+            </form>
+
+            {% if user_input %}
+            <div class="user-input">
+                <strong>You entered:</strong> {{ user_input }}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="card hidden">
+            <div class="loading">
+                <i class="material-icons">autorenew</i>
+                <h2>Analyzing your symptoms...</h2>
+                <p>Our AI is processing your information to provide the most accurate diagnosis.</p>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="card hidden">
+            {% if user_input %}
+            <div class="user-input">
+                <strong>You entered:</strong> {{ user_input }}
+            </div>
+            {% endif %}
+
+            {% if predictions %}
+            <div class="results">
+                <h2>Predicted Diseases:</h2>
+                <div class="results-list">
+                    {% for disease, percent, treatments in predictions %}
+                    <details class="diagnosis-item" {% if loop.first %}open{% endif %}>
+                        <summary>
+                            <h3>
+                                <span>{{ disease }}</span>
+                                <span class="probability">{{ percent }}</span>
+                            </h3>
+                        </summary>
+                        <div class="symptoms-list"><strong>Treatments:</strong> {{ treatments }}</div>
+                    </details>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <button id="new-analysis-btn" class="btn" style="margin-top: 20px;">
+                <i class="material-icons">add</i>
+                New Analysis
+            </button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('symptoms-form');
+            const homeScreen = document.getElementById('home-screen');
+            const loadingScreen = document.getElementById('loading-screen');
+            const resultsScreen = document.getElementById('results-screen');
+            const newAnalysisBtn = document.getElementById('new-analysis-btn');
+            const symptomsInput = document.getElementById('symptoms_input');
+            const suggestionsContainer = document.getElementById('suggestions-container');
+            const selectedTagsContainer = document.getElementById('selected-tags-container');
+            
+            // Common symptoms from the model
+            const commonSymptoms = [
+  'fever', 'cough', 'headache', 'sore_throat', 'runny_nose',
+  'nausea', 'vomiting', 'fatigue', 'dizziness', 'rash',
+  'itching', 'chills', 'body_ache', 'sneezing', 'blurred_vision',
+  'abdominal_pain', 'shortness_of_breath', 'swelling', 'redness',
+  'congestion', 'muscle_pain', 'itchy_eyes', 'watery_eyes',
+  'chest_pain', 'high_fever', 'swollen_glands', 'loss_of_smell',
+  'nasal_congestion', 'weakness', 'abdominal_cramps', 'wheezing',
+  'hives', 'ear_pain', 'thick_mucus', 'swollen_tonsils',
+  'diarrhea', 'constipation', 'bloating', 'flatulence', 'heartburn',
+  'dry_mouth', 'difficulty_swallowing', 'night_sweats', 'weight_loss',
+  'weight_gain', 'palpitations', 'tinnitus', 'ear_discharge',
+  'vision_loss', 'double_vision', 'numbness', 'tingling',
+  'loss_of_consciousness', 'confusion', 'insomnia', 'anxiety',
+  'depression', 'hallucinations', 'urinary_incontinence',
+  'frequent_urination', 'painful_urination', 'blood_in_stool',
+  'rectal_bleeding', 'jaundice', 'itchy_skin', 'bruising',
+  'swollen_lymph_nodes', 'muscle_weakness', 'joint_pain',
+  'back_pain', 'neck_stiffness', 'seizures', 'tremors',
+  'loss_of_appetite', 'burning_micturition', 'cold_hands_and_feet',
+  'excessive_thirst', 'lethargy', 'dark_urine', 'dry_skin',
+  'yellowing_eyes', 'irritability', 'stomach_bleeding',
+  'pain_during_bowel_movements', 'pus_filled_pimples',
+  'blackheads', 'scurring', 'ulcers_on_tongue', 'belly_pain',
+  'inflammatory_nails', 'pain_in_anal_region', 'bloody_urine',
+  'dischromic_patches', 'sunken_eyes', 'silver_like_dusting', 'erection',
+  'skin_peeling', 'skin_rash', 'watering_from_eyes', 'spots_in_vision',
+  'increased_appetite', 'small_dents_in_nails', 'yellow_crust_ooze',
+  'difficulty_breathing', 'excessive_sweating', 'irregular_heartbeat',
+  'difficulty_concentrating', 'persistent_cough', 'dry_cough',
+  'productive_cough', 'tightness_in_chest', 'cyanosis',
+  'hot_flashes', 'hair_loss', 'cold_sweats', 'goiter',
+  'hoarseness', 'lump_in_throat', 'dehydration', 'cramps',
+  'eye_strain', 'photophobia', 'eye_pain', 'facial_pain',
+  'jaw_pain', 'lockjaw', 'clumsiness', 'restlessness',
+  'trouble_speaking', 'trouble_walking', 'drooping_face',
+  'blurred_speech', 'slurred_speech', 'slow_heartbeat',
+  'foul_breath', 'difficulty_hearing', 'ear_ringing',
+  'lightheadedness', 'frequent_hiccups', 'gastric_reflux', 'disabling migraines',
+  'rectal_pain', 'pelvic_pain', 'shoulder_pain', 'Recurrent',
+  'knee_pain', 'finger_joint_pain', 'toenail_discoloration',
+  'dry_scalp', 'skin_discoloration', 'flaky_skin',
+  'open_sores', 'excessive_sleepiness', 'memory_loss','stiffness',
+];
+
+
+            // Current selected tags
+            let selectedTags = [];
+
+            // If there are already predictions, show results screen immediately
+            {% if predictions %}
+                homeScreen.classList.add('hidden');
+                loadingScreen.classList.add('hidden');
+                resultsScreen.classList.remove('hidden');
+            {% endif %}
+
+            // Initialize with any existing input
+            if (symptomsInput.value) {
+                selectedTags = symptomsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                updateSelectedTags();
+            }
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Update the hidden input with selected tags
+                symptomsInput.value = selectedTags.join(', ');
+                
+                homeScreen.classList.add('hidden');
+                loadingScreen.classList.remove('hidden');
+                
+                // Simulate AI processing delay before submitting
+                setTimeout(function() {
+                    form.submit();
+                }, 1500);
+            });
+            
+            // Handle new analysis button
+            newAnalysisBtn.addEventListener('click', function() {
+                resultsScreen.classList.add('hidden');
+                homeScreen.classList.remove('hidden');
+                symptomsInput.value = '';
+                selectedTags = [];
+                updateSelectedTags();
+                updateSuggestions('');
+            });
+
+            // Handle input for suggestions
+            symptomsInput.addEventListener('input', function(e) {
+                updateSuggestions(e.target.value);
+            });
+
+            // Function to update suggestions based on input
+            function updateSuggestions(input) {
+                suggestionsContainer.innerHTML = '';
+                
+                if (!input) {
+                    // Show some common symptoms when input is empty
+                    commonSymptoms.slice(0, 5).forEach(symptom => {
+                        if (!selectedTags.includes(symptom)) {
+                            addSuggestion(symptom);
+                        }
+                    });
+                    return;
+                }
+                
+                const inputLower = input.toLowerCase();
+                const matchingSymptoms = commonSymptoms.filter(symptom => 
+                    symptom.toLowerCase().includes(inputLower) && 
+                    !selectedTags.includes(symptom)
+                );
+                
+                matchingSymptoms.slice(0, 5).forEach(symptom => {
+                    addSuggestion(symptom);
+                });
+            }
+
+            // Function to add a suggestion tag
+            function addSuggestion(symptom) {
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.textContent = symptom.replace(/_/g, ' ');
+                tag.addEventListener('click', function() {
+                    if (!selectedTags.includes(symptom)) {
+                        selectedTags.push(symptom);
+                        updateSelectedTags();
+                        updateSuggestions('');
+                        symptomsInput.value = '';
+                        symptomsInput.focus();
+                    }
+                });
+                suggestionsContainer.appendChild(tag);
+            }
+
+            // Function to update the selected tags display
+            function updateSelectedTags() {
+                selectedTagsContainer.innerHTML = '';
+                
+                selectedTags.forEach((tag, index) => {
+                    const tagElement = document.createElement('div');
+                    tagElement.className = 'selected-tag';
+                    tagElement.innerHTML = `
+                        ${tag.replace(/_/g, ' ')}
+                        <span class="remove-tag" data-index="${index}">×</span>
+                    `;
+                    selectedTagsContainer.appendChild(tagElement);
+                });
+
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-tag').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const index = parseInt(this.getAttribute('data-index'));
+                        selectedTags.splice(index, 1);
+                        updateSelectedTags();
+                        updateSuggestions(symptomsInput.value);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
