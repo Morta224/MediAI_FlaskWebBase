@@ -9,6 +9,7 @@ Lanz Santillan - 23-2354-811
 MediAI- A diagnosis app that uses AI to search for diseases.
 
 Instructions:
+
 Step 1:
 
 Open xampp, and turn on mysql database, go to localhost/phpadmin, then create “medical_db” and insert “symptoms.sql”.
